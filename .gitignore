@@ -1,0 +1,20 @@
+# .gitignore
+*.pyc
+__pycache__/
+*.sqlite3
+.env
+*.env
+.env.local
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.coverage
+htmlcov/
+.DS_Store
+db.sqlite3
+/media
+/static
+/staticfiles
