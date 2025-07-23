@@ -14,7 +14,7 @@ import shutil
 from pathlib import Path
 
 pytest_plugins = [
-    'receipts.tests.fixtures',
+    'apps.receipts.tests.fixtures',
     'apps.users.tests.fixtures'
 ]
 

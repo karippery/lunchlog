@@ -4,7 +4,11 @@ version = "0.1.0"
 description = "A lunch logging application"
 authors = ["karippery <john.karippery@yahoo.com>"]
 readme = "README.md"
-packages = [{include = "lunchlog"}]
+packages = [
+  { include = "apps" },
+  { include = "config" }
+]
+
 
 [tool.poetry.dependencies]
 python = "^3.13"
