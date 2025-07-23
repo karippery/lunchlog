@@ -1,4 +1,3 @@
-# receipts/views.py
 from apps.receipts.models import Receipt
 from apps.receipts.serializers import ReceiptSerializer
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView

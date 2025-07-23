@@ -22,6 +22,8 @@ django-storages = "^1.14.6"
 boto3 = "^1.39.11"
 pillow = "^11.3.0"
 botocore = "^1.39.11"
+geopy = "^2.4.1"
+celery = "^5.5.3"
 
 
 
