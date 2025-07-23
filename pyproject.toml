@@ -21,6 +21,7 @@ django-extensions = "^4.1"
 django-storages = "^1.14.6"
 boto3 = "^1.39.11"
 pillow = "^11.3.0"
+botocore = "^1.39.11"
 
 
 
