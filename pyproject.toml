@@ -18,6 +18,9 @@ django-filter = "^25.1"
 drf-spectacular = "^0.28.0"
 drf-yasg = "^1.21.10"
 django-extensions = "^4.1"
+django-storages = "^1.14.6"
+boto3 = "^1.39.11"
+pillow = "^11.3.0"
 
 
 

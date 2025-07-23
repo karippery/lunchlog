@@ -47,9 +47,11 @@ INSTALLED_APPS = [
     'drf_spectacular',
     "rest_framework",
     'django_filters',
+    'storages',
 
     # local apps
     "apps.users",
+    "apps.receipts"
 ]
 
 AUTH_USER_MODEL = 'users.User'
