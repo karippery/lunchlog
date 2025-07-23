@@ -1,6 +1,7 @@
 from apps.receipts.models import Receipt
 from apps.receipts.tests.factories import ReceiptFactory
 import pytest
+from apps.restaurants.tests.factories import RestaurantFactory
 from apps.users.tests.factories import UserFactory
 from apps.users.models import UserRoles
 from django.urls import reverse
@@ -25,11 +26,12 @@ class TestReceiptModel:
     def test_receipt_creation(self):
         """Test basic receipt creation with all required fields."""
         user = UserFactory()
+        restaurant = RestaurantFactory(name="Test Restaurant")
         receipt = Receipt.objects.create(
             user=user,
             date=date.today(),
             price=Decimal('25.99'),
-            restaurant="Test Restaurant",
+            restaurant=restaurant,
             address="123 Main St",
             image_url="http://example.com/receipt.jpg"
         )
@@ -38,7 +40,7 @@ class TestReceiptModel:
         assert receipt.user == user
         assert receipt.date == date.today()
         assert receipt.price == Decimal('25.99')
-        assert receipt.restaurant == "Test Restaurant"
+        assert receipt.restaurant.name == "Test Restaurant"
         assert receipt.address == "123 Main St"
         assert receipt.image_url == "http://example.com/receipt.jpg"
         assert receipt.is_processed is False  # Default value
@@ -47,17 +49,21 @@ class TestReceiptModel:
     
     def test_receipt_str_representation(self):
         """Test string representation of receipt."""
-        receipt = ReceiptFactory(restaurant="Test Restaurant")
-        expected = f"Receipt #{receipt.id} - Test Restaurant - {receipt.date}"
+        restaurant = RestaurantFactory(name="Test Restaurant")
+        receipt = ReceiptFactory(restaurant=restaurant)
+        
+        # Get the full datetime string as it appears in the model
+        expected = f"Receipt #{receipt.id} - Test Restaurant ({restaurant.place_id}) - {receipt.date}"
         assert str(receipt) == expected
     
     def test_receipt_default_values(self):
         """Test receipt default field values."""
         user = UserFactory()
+        restaurant = RestaurantFactory(name="Test Restaurant")
         receipt = Receipt.objects.create(
             user=user,
             price=Decimal('10.00'),
-            restaurant="Test Restaurant",
+            restaurant=restaurant,
             address="123 Main St",
             image_url="http://example.com/receipt.jpg"
         )
@@ -68,12 +74,12 @@ class TestReceiptModel:
     def test_receipt_price_validation(self):
         """Test price field validation (minimum value)."""
         user = UserFactory()
-        
+        restaurant = RestaurantFactory(name="Test Restaurant")
         # Valid price
         valid_receipt = Receipt(
             user=user,
             price=Decimal('0.01'),
-            restaurant="Test Restaurant",
+            restaurant=restaurant,
             address="123 Main St",
             image_url="http://example.com/receipt.jpg"
         )
@@ -84,7 +90,7 @@ class TestReceiptModel:
             invalid_receipt = Receipt(
                 user=user,
                 price=Decimal('-1.00'),
-                restaurant="Test Restaurant",
+                restaurant=restaurant,
                 address="123 Main St",
                 image_url="http://example.com/receipt.jpg"
             )
@@ -94,7 +100,7 @@ class TestReceiptModel:
         zero_receipt = Receipt(
             user=user,
             price=Decimal('0.00'),
-            restaurant="Test Restaurant",
+            restaurant=restaurant,
             address="123 Main St",
             image_url="http://example.com/receipt.jpg"
         )
@@ -104,7 +110,6 @@ class TestReceiptModel:
         """Test receipt-user foreign key relationship."""
         user = UserFactory()
         receipt = ReceiptFactory(user=user)
-        
         assert receipt.user == user
         assert receipt in user.receipts.all()
         
@@ -154,11 +159,12 @@ class TestReceiptListCreateView:
     def test_create_receipt_with_image_url(self, authenticated_guest_client):
         """Test creating a new receipt with image_url."""
         client, user = authenticated_guest_client
+        restaurant = RestaurantFactory(name="Test Restaurant")
         
         test_data = {
             'date': '2023-01-15',
             'price': '12.50',
-            'restaurant': 'Test Restaurant',
+            'restaurant': restaurant.id,  # Changed to ID
             'address': '123 Test St',
             'image_url': 'http://example.com/receipt.jpg'
         }
@@ -170,19 +176,20 @@ class TestReceiptListCreateView:
         assert Receipt.objects.filter(user=user).count() == 1
         
         created_receipt = Receipt.objects.get(user=user)
-        assert created_receipt.restaurant == test_data['restaurant']
+        assert created_receipt.restaurant.id == restaurant.id  # Compare IDs
         assert str(created_receipt.price) == test_data['price']
         assert created_receipt.image_url == test_data['image_url']
         assert created_receipt.is_processed is False
-    
+
     def test_create_receipt_with_image_file(self, authenticated_guest_client, sample_image):
         """Test creating receipt with image file upload."""
         client, user = authenticated_guest_client
+        restaurant = RestaurantFactory(name="Test Restaurant")
         
         data = {
             'date': '2023-01-15',
             'price': '15.99',
-            'restaurant': 'Image Restaurant',
+            'restaurant': restaurant.id,
             'address': '456 Image St',
             'image': sample_image
         }
@@ -198,11 +205,12 @@ class TestReceiptListCreateView:
     def test_create_receipt_validation_error(self, authenticated_guest_client):
         """Test creating receipt without image or image_url raises validation error."""
         client, user = authenticated_guest_client
+        restaurant = RestaurantFactory(name="Test Restaurant")
         
         data = {
             'date': '2023-01-15',
             'price': '15.99',
-            'restaurant': 'Test Restaurant',
+            'restaurant': restaurant.id,
             'address': '456 Test St',
             # Missing both image and image_url
         }

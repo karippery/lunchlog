@@ -47,3 +47,11 @@ class RecommendationSerializer(serializers.Serializer):
         required=False
     )
 
+    def validate(self, data):
+        # Skip validation for existing restaurants in recommendations
+        if 'recommendations' in data:
+            for rec in data['recommendations']:
+                if 'place_id' in rec:
+                    rec.pop('place_id', None)
+        return data
+
