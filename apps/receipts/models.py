@@ -29,7 +29,11 @@ class Receipt(models.Model):
     )
     address = models.TextField()
     is_processed = models.BooleanField(default=False)
-    restaurant = models.TextField()
+    restaurant = models.ForeignKey(
+        'restaurants.Restaurant',
+        on_delete=models.PROTECT,
+        
+    )
     
     # For direct image upload
     image = models.ImageField(

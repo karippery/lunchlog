@@ -36,6 +36,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('apps.users.urls')),
     path('api/v1/', include('apps.receipts.urls')),
+    path('api/v1/', include('apps.restaurants.urls')),
 
 ]
 if base.DEBUG:
