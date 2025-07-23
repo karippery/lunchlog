@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "rest_framework",
     'django_filters',
     'storages',
+    'django.contrib.gis',
 
     # local apps
     "apps.users",
@@ -92,9 +93,10 @@ ASGI_APPLICATION = "config.asgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db()
+    "default": env.db(
+        engine="django.contrib.gis.db.backends.postgis"
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

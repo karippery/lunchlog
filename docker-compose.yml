@@ -13,6 +13,7 @@ services:
       - .env
     command: >
       /bin/sh -c "
+        python manage.py makemigrations &&
         python manage.py migrate &&
         python manage.py collectstatic --noinput &&
         python manage.py runserver 0.0.0.0:8000
@@ -100,7 +101,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5  
-      
+
   celery-beat:
     build: 
       context: .

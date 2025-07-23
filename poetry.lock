@@ -477,7 +477,7 @@ version = "37.4.2"
 description = "Faker is a Python package that generates fake data for you."
 optional = false
 python-versions = ">=3.9"
-groups = ["dev"]
+groups = ["main", "dev"]
 files = [
     {file = "faker-37.4.2-py3-none-any.whl", hash = "sha256:b70ed1af57bfe988cbcd0afd95f4768c51eaf4e1ce8a30962e127ac5c139c93f"},
     {file = "faker-37.4.2.tar.gz", hash = "sha256:8e281bbaea30e5658895b8bea21cc50d27aaf3a43db3f2694409ca5701c56b0a"},
@@ -1338,4 +1338,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13"
-content-hash = "991a6e933cd8b9be57d13f7d97270b5abebbd9194b0219d285be89d7a3c7ad1e"
+content-hash = "dc8a577272cbfe6645f86074772b087e174f80ae165a2f29f5ae7505772e9e56"

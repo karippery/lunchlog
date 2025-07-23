@@ -24,6 +24,7 @@ pillow = "^11.3.0"
 botocore = "^1.39.11"
 geopy = "^2.4.1"
 celery = "^5.5.3"
+faker = "^37.4.2"
 
 
 
